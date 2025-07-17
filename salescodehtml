@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SalesCode.ai SFA Pricing Configurator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8fbff;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    header button {
+      padding: 8px 16px;
+      background-color: white;
+      color: #2d6cdf;
+      border: 1px solid #2d6cdf;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 40px;
+      gap: 40px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+      padding: 30px;
+      width: 580px;
+    }
+
+    .bundle-summary {
+      width: 400px;
+      padding: 30px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+      height: fit-content;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .price {
+      font-size: 1.5rem;
+      color: #2d6cdf;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      color: white;
+      background: linear-gradient(to right, #4d2aff, #8a3ffc);
+      border: none;
+      border-radius: 8px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: gray;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .module-title {
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+
+    .module-title input {
+      margin-right: 10px;
+    }
+
+    ul {
+      padding-left: 20px;
+      color: #444;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>SalesCode.ai</h1>
+    <a href="tel:1800218898"><button>Contact Sales</button></a>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h2>Choose Your Modules</h2>
+      <div class="module-title">
+        <input type="checkbox" id="coreModule" checked disabled />
+        <label for="coreModule">Next Gen SFA Core Module</label>
+      </div>
+      <ul>
+        <li>Attendance • Outlet Mapping • Geo-tag/Geo-fencing</li>
+        <li>PJP creation/Approval • Digital Catalogue</li>
+        <li>Discounts & Promotions • Merchandising • Stock entry</li>
+        <li>Return • Order Tracking • Dashboards in App</li>
+        <li>Portal Reports & Dashboard • Master Data Management Console</li>
+      </ul>
+      <p><a href="#">&gt;&gt; See Detailed List</a></p>
+
+      <p><strong>Base:</strong> ₹375,000 OTC + Tiered ₹/user/month</p>
+
+      <label for="userCount">Number of Users</label>
+      <input type="range" id="userCount" min="1" max="5000" value="100" />
+      <p><strong id="userLabel">100</strong> users</p>
+      <p>Total Module Cost: <span class="price" id="monthlyCost">₹0/mo</span></p>
+    </div>
+
+    <div class="bundle-summary">
+      <h2>⚙️ Your Bundle</h2>
+      <p><strong>Next Gen SFA Core Module</strong> <span class="price" id="summaryPrice">₹0/mo</span></p>
+      <p class="text-right">Base cost (<span id="summaryUsers">100</span> users)</p>
+
+      <hr />
+
+      <p>One-time Implementation: <strong>₹375,000</strong></p>
+      <p>Monthly Subscription: <strong id="summaryMonthly">₹0/mo</strong></p>
+
+      <hr />
+      <h3>Total Bundle Cost: <span class="price" id="summaryTotal">₹375,000</span></h3>
+      <a href="tel:1800218898"><button class="btn-primary">Talk to Sales</button></a>
+      <p class="note">Get a custom quote and implementation plan</p>
+    </div>
+  </main>
+
+  <script>
+    const userSlider = document.getElementById('userCount');
+    const userLabel = document.getElementById('userLabel');
+    const monthlyCost = document.getElementById('monthlyCost');
+    const summaryPrice = document.getElementById('summaryPrice');
+    const summaryUsers = document.getElementById('summaryUsers');
+    const summaryMonthly = document.getElementById('summaryMonthly');
+    const summaryTotal = document.getElementById('summaryTotal');
+
+    function calculateCost(users) {
+      let costPerUser = 0;
+      if (users <= 100) costPerUser = 449;
+      else if (users <= 300) costPerUser = 349;
+      else if (users <= 500) costPerUser = 249;
+      else costPerUser = 149;
+      return users * costPerUser;
+    }
+
+    function updatePricing() {
+      const users = parseInt(userSlider.value);
+      const cost = calculateCost(users);
+      userLabel.textContent = users;
+      summaryUsers.textContent = users;
+      monthlyCost.textContent = `₹${cost.toLocaleString()}/mo`;
+      summaryPrice.textContent = `₹${cost.toLocaleString()}/mo`;
+      summaryMonthly.textContent = `₹${cost.toLocaleString()}/mo`;
+      summaryTotal.textContent = `₹${(375000 + cost).toLocaleString()}`;
+    }
+
+    userSlider.addEventListener('input', updatePricing);
+    updatePricing();
+  </script>
+</body>
+
+</html>
